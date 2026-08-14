@@ -33,3 +33,5 @@ Answer customer policy-related questions using semantic search and a simple work
 ## Output
 
 The API accepts customer queries and returns policy-based answers with confidence and source information.
+
+This module demonstrates a simple Retrieval-Augmented Generation (RAG) workflow.
