@@ -57,7 +57,6 @@ Feature importance analysis identified sex, age, fare, and passenger class as in
 
 - `01_eda.ipynb` – Exploratory Data Analysis
 - `02_modeling.ipynb` – Data preprocessing, model training, evaluation, hyperparameter tuning, and feature importance
-- `titanic.csv` – Dataset used for modeling
 
 ## Libraries and Tools
 
