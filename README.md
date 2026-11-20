@@ -1,168 +1,87 @@
-# AI & ML Final Project
 
-## Project Overview
+# Books Data Pipeline
 
-This repository contains three modules completed as part of the AI & ML Capstone Project.
+## Overview
 
-- Data Pipeline
-- Analytics
-- Support Assistant
+This project builds an end-to-end data pipeline using Python, web scraping, Pandas, and SQLite.
 
-Each module is organized in its own folder.
+It collects book information from the Books to Scrape website, cleans and transforms the data, stores it in a relational database, and performs SQL-based analysis.
 
----
+## Technologies Used
 
-# Project Structure
+- Python
+- Requests
+- BeautifulSoup
+- Pandas
+- SQLite
+- SQL
 
-```
-ai-ml-final-project/
-│
-├── data_pipeline/
-│   ├── 01_data_pipeline.ipynb
-│   └── README.md
-│
-├── analytics/
-│   ├── 01_eda.ipynb
-│   ├── 02_modeling.ipynb
-│   └── README.md
-│
-├── support_assistant/
-│   ├── 03_support_assistant.ipynb
-│   └── README.md
-│
-└── README.md
-```
+## Pipeline Workflow
 
----
+1. Scraped book information from five website pages.
+2. Collected 100 book records, including title, price, rating, availability, and category.
+3. Cleaned prices by removing currency symbols and converting values into numeric format.
+4. Converted text-based ratings into numerical values from 1 to 5.
+5. Converted availability into Boolean values.
+6. Converted GBP prices into INR using a fixed assumed exchange rate.
+7. Stored the processed records in SQLite using related `books` and `categories` tables.
+8. Performed SQL queries and compared SQL JOIN results with Pandas merge results.
 
-# Requirements
+## Data Cleaning and Quality Decisions
 
-Install the required Python libraries before running the notebooks.
+- Removed unwanted characters such as `Â` and `£` before converting prices to numeric values.
+- Used `errors='coerce'` to convert invalid numeric prices into missing values for validation.
+- Checked missing values and duplicate records before database insertion.
+- Found five books with the source category label `Add a comment`. Replaced this invalid label with `Unknown` while preserving all five books.
+- No invalid numeric prices or missing values were found in the collected 100 records.
 
-```
-pip install pandas numpy matplotlib seaborn requests beautifulsoup4 sqlite3 chromadb sentence-transformers langgraph fastapi uvicorn
-```
+## Currency Conversion
 
----
+Used a fixed assumed conversion rate:
 
-# Module 1 – Data Pipeline
+`1 GBP = ₹105.50`
 
-This module performs data collection and preprocessing.
+This is a project assumption, not a live exchange rate. INR values were rounded to two decimal places.
 
-Main tasks:
+## Database Design
 
-- Scrape book information from BooksToScrape
-- Clean the dataset
-- Convert prices
-- Store data in SQLite
-- Execute SQL queries
+The SQLite database contains two tables:
 
-Notebook:
+- `categories`: Stores unique category names.
+- `books`: Stores book details and references categories through `category_id`.
 
-```
-01_data_pipeline.ipynb
-```
+A foreign key maintains the relationship between the two tables.
 
----
+## SQL Analysis
 
-# Module 2 – Analytics
+The project includes queries for:
 
-This module performs exploratory data analysis and visualization.
+- Filtering books by price and rating.
+- Sorting books by price.
+- Finding distinct ratings.
+- Filtering books within a price range.
+- Joining books with categories.
+- Counting books by category.
+- Calculating average, minimum, and maximum prices.
+- Checking database relationships.
 
-Main tasks:
+The SQL JOIN output was compared with an equivalent Pandas merge, and both results matched.
 
-- Data loading
-- Data preprocessing
-- Statistical summary
-- Price analysis
-- Rating analysis
-- Category analysis
-- Visualizations
+## Validation Results
 
-Notebooks:
+| Check | Result |
+|---|---:|
+| Books collected | 100 |
+| Unique categories | 29 |
+| Duplicate records | 0 |
+| Missing values after cleaning | 0 |
+| Books with corrected category | 5 |
+| SQL JOIN and Pandas merge | Match |
+| Foreign key errors | 0 |
 
-```
-01_eda.ipynb
-02_modeling.ipynb
-```
+## How to Run
 
----
+Install the required libraries:
 
-# Module 3 – Support Assistant
-
-This module implements an AI-powered customer support assistant using Retrieval-Augmented Generation (RAG).
-
-Technologies:
-
-- ChromaDB
-- Sentence Transformers
-- LangGraph
-- FastAPI
-
-Main tasks:
-
-- Semantic search
-- Intent classification
-- Context retrieval
-- Response generation
-- API endpoint
-
-Notebook:
-
-```
-03_support_assistant.ipynb
-```
-
----
-
-# How to Run
-
-## Data Pipeline
-
-Open and run:
-
-```
-01_data_pipeline.ipynb
-```
-
----
-
-## Analytics
-
-Run in order:
-
-```
-01_eda.ipynb
-02_modeling.ipynb
-```
-
----
-
-## Support Assistant
-
-Run:
-
-```
-03_support_assistant.ipynb
-```
-
----
-
-# Design Decisions
-
-- Used modular folder structure for better organization.
-- Used Pandas and SQLite for data processing.
-- Used Matplotlib for visualization.
-- Used ChromaDB for vector storage.
-- Used Sentence Transformers for embeddings.
-- Used LangGraph for workflow orchestration.
-- Used FastAPI for serving the support assistant.
-
----
-
-# Author
-
-Pavan Dasari
-AI & ML Capstone Project
-
-Project completed as part of the AI & ML Capstone evaluation.
+```bash
+pip install requests pandas beautifulsoup4
